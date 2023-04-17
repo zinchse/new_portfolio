@@ -1,6 +1,38 @@
 ---
 layout: default
 ---
+
+{% if contents %}
+  <ul>
+  {% for education in contents %}
+    <li>
+      <p class="education-title">{{ education.title }}</p>
+      <p class="education-institution">{{ education.institution }}</p>
+      <p class="education-year">{{ education.year }}</p>
+      {% if education.description %}
+        <ul>
+        {% for description in education.description %}
+          {% if description.courses %}
+          <li>
+            {{ description | markdownify }}
+            <ul>
+            {% for course in description.courses %}
+              <li>{{ course }}</li>
+            {% endfor %}
+            </ul>
+          </li>
+          {% else %}
+          <li>{{ description | markdownify }}</li>
+          {% endif %}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}
+
+
 <!-- _layouts/cv.html -->
         <div class="post">
 
@@ -33,3 +65,6 @@ layout: default
           </article>
 
         </div>
+
+
+        

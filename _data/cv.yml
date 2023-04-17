@@ -2,96 +2,115 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
+      value: Sergey Zinchenko
     - name: Date of Birth
-      value: 14th March 1879
+      value: 5th January 2000
     - name: Languages
-      value: English, German
-
-- title: Education
-  type: time_table
-  contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
-      description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
-      description:
-        - Description 1.
-        - Description 2.
+      value: english, russian, elvish 🧝
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: researcher & developer
+      institution: <a href="https://huawei.ru/">Huawei</a>
+      year: aug 2022 - now
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        - independent research in the field of DBMS optimization
+        - development of new solutions and modification of existing ones
+        - design and conducting experiments
+        - areas of study range from RL and optimization problems on graphs to the development of specialized sampling methods
+    - title: researcher
+      institution: <a href="https://cs.hse.ru/en/hdilab/">International Laboratory of Stochastic Algorithms and High-Dimensional Inference</a>
+      year: july 2021 - may 2022
       description:
-        - Description 1.
-        - Description 2.
+        - development of a new algorithm for ensembling machine learning models
+        - the optimality of the developed algorithm was proved
+        - the algorithm was successfully implemented and applied in practice to solve a number of test problems
+        - the publication was accepted at the ICML conference
 
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
-      description:
-
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
-
-- title: Open Source Projects
+- title: Education
   type: time_table
   contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+    - title: master degree
+      institution: Novosibirsk State University, Novosibirsk, Russia
+      year: now
+      description:
+        - optimization of RDBMS in the OLAP scenario using ML techniques
+
+    - title: bachelor degree
+      institution: Novosibirsk State University, Novosibirsk, Russia
+      year: 2022
+      description:
+        - graduated with honors (GPA 4.97 / 5.0)
+        - specialized in Algorithmics and Statistical Learning Theory
+        - diploma is related to the development of a new way of constructing ensembles in machine learning
+
+- title: Majors
+  type: time_table
+  contents:
+    - year: main
+      items:
+        - linear algebra
+        - mathematical analysis
+        - theory of probability and mathematical statistycs
+        - discrete optimization
+        - computational methods
+    - year: special
+      items: 
+      - randomized algorithms
+      - parameterized algorithms
+      - big data algorithms
+      - general complexity theory
+
+- title: Conferences
+  type: time_table
+  contents:
+    - year: 2022
+      items: 
+        - <a href="https://dynn-icml2022.github.io/">ICML Dynamic Neural Network Workshop, Baltimore (poster)</a>
+        - <a href="https://conf.nsu.ru/en/issc_2022">ISSC, Novosibirsk (oral)</a>
+        - <a href="https://siriusuniversity.ru/education/educational-modules-and-activities/informatsionnie-tehnologii-i-iskusstvennii-intellekt/konferentsiya-airi-po-iskusstvennomu-intellektu">AIRI, Sochi (poster)</a>
+      
+    - year: 2020
+      items: 
+        - <a href="https://snowone.ru/">SnowOne, Novosibirsk (listener)</a>
+    - year: 2019
+      items:
+        - <a href="http://cssr.nsu.ru/school//">CSSR, Novosibirsk (listener)</a>
+      
+- title: Schools
+  type: time_table
+  contents:
+    - year: 2022
+      items:
+        CompTech, Novosibirsk (teamlead, ml engineer)
+      
+    - year: 2021
+      items:
+        - <a href="https://sochisirius.ru/obuchenie/graduate/smena928/4472">Modern Methods of the Theory of Optimization, Sochi (ml researcher)</a>
+        - CompTech, Novosibirsk (listener)
+        
+    - year: 2020
+      items:
+        - CompTech, Novosibirsk (listener)
+      
+    - year: 2019
+      items:
+        - <a href="https://bmm2022.mca.nsu.ru/">Mathematical Workshop 2020, Novosibirsk (researcher in Differential Equations)</a>
 
 - title: Honors and Awards
   type: time_table
   contents:
-    - year: 1921
+    - year: 2022
       items: 
-        - Nobel Prize in Physics 
-        - Matteucci Medal
-    - year: 2029
+        -  <a href="https://yandex.ru/profi/index">Winner the Olympiad "I am a Professional" (Mathematics)
+    - year: 2021
       items: 
-        - Max Planck Medal
-
-- title: Academic Interests
-  type: nested_list
-  contents:
-    - title: Topic 1.
+        -  <a href="https://nsucrypto.nsu.ru/">Winner the International Olympiad in Cryptography NSUCRYPTO
+    - year: 2019
       items: 
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
+        -  <a href="http://smc.nsu.ru/en//">Winner the International Open Student Contest on Mathematics
+    - year: 2018
       items:
-        - Description 1.
-        - Description 2.
-
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+        - Hope of the Faculty of Mechanics and Mathematics of NSU
+        - Alfa-Chance program for the best students

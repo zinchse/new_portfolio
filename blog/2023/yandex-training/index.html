@@ -10,9 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>a post about Yandex Training 3.0 | Sergey E. Zinchenko</title>
+    <title>Yandex Training 3.0 - Hints and Results | Sergey E. Zinchenko</title>
     <meta name="author" content="Sergey E. Zinchenko">
-    <meta name="description" content="an example of a blog post lalala">
+    <meta name="description" content="general conclusions after participating in the contest">
     <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website">
 
 
@@ -112,7 +112,7 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">a post about Yandex Training 3.0</h1>
+    <h1 class="post-title">Yandex Training 3.0 - Hints and Results</h1>
     <p class="post-meta">June 22, 2023</p>
     <p class="post-tags">
       <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
@@ -129,12 +129,14 @@
   </header>
 
   <article class="post-content">
-    <blockquote>
-  <p>Path <strong>from</strong> <em>“count the number of characters”</em> <strong>to</strong> <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em> <br>
-– or just <a href="https://yandex.ru/yaintern/algorithm-training" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a></p>
+    <p><img src="/assets/img/contest_logo.png" alt="contest logo" width="800px"></p>
+
+<blockquote>
+  <p>Path <strong>from</strong> <em>“count the number of characters”</em>  <strong>to</strong>  <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em> <br>
+– or just <a href="https://yandex.ru/yaintern/algorithm-training" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a> :D</p>
 </blockquote>
 
-<p>I’ve already seen most of the problems from there in some form, but I really liked the last block. The concept of the state graph is very cool, I recommend everyone to get acquainted.
+<p>I’ve already seen most of the problems from there in some form, but I really liked the last block. The concept of the <code class="language-plaintext highlighter-rouge">State Graph</code> is very cool, I recommend everyone to get acquainted.
 You can find my solutions and the template with optimal and universal I/O <a href="https://github.com/zinchse/_contests" rel="external nofollow noopener" target="_blank">[here]</a>.</p>
 
 <p>As a result, I took <code class="language-plaintext highlighter-rouge">1-144</code>th place in the olympiad division, and was the first among those who were left without prizes, both in the both divisions. Interestingly, I wrote an algorithm with optimal asymptotics, which did not pass all the tests, and most of the time I tried to start it. But without success… So, after a couple of months I got back to this problem, and found something amazing (<code class="language-plaintext highlighter-rouge">really :)</code>). About this I will report in a separate post.</p>
@@ -151,13 +153,13 @@ You can find my solutions and the template with optimal and universal I/O <a hre
   <li>
 <strong>the problem’s input limits are the most important information in the problem’s definition</strong>
     <blockquote>
-      <p>you can use them to figure out the asymptotic required solution; my advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10^7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine</p>
+      <p>you can use them to figure out the asymptotic required solution; my advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10 ** 7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine</p>
     </blockquote>
   </li>
   <li>
 <strong>even simple arithmetic operations can be saved</strong>
     <blockquote>
-      <p>for example, if suddenly within a loop you repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d * * 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, you can significantly speed up the program</p>
+      <p>for example, if suddenly within a loop you repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d ** 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, you can significantly speed up the program</p>
     </blockquote>
   </li>
   <li>
@@ -172,7 +174,7 @@ You can find my solutions and the template with optimal and universal I/O <a hre
     <script type="text/javascript">
         var disqus_shortname  = 'al-folio';
         var disqus_identifier = '/blog/2023/yandex-training';
-        var disqus_title      = "a post about Yandex Training 3.0";
+        var disqus_title      = "Yandex Training 3.0 - Hints and Results";
         (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';

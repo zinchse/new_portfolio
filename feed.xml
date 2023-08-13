@@ -1,10 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-25T06:11:43+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
-</subtitle><entry><title type="html">Yandex Training 3.0 - Hints and Results</title><link href="https://zinchse.github.io/blog/2023/yandex-training/" rel="alternate" type="text/html" title="Yandex Training 3.0 - Hints and Results" /><published>2023-06-22T13:59:00+00:00</published><updated>2023-06-22T13:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/yandex-training</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/yandex-training/"><![CDATA[<p><img src="/assets/img/contest_logo.png" alt="contest logo" width="800px" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-08-13T07:39:57+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
+</subtitle><entry><title type="html">Leetcode Marathon (**do not repeat!**)</title><link href="https://zinchse.github.io/blog/2023/leetcode-challenge/" rel="alternate" type="text/html" title="Leetcode Marathon (**do not repeat!**)" /><published>2023-08-12T14:59:00+00:00</published><updated>2023-08-12T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/leetcode-challenge</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/leetcode-challenge/"><![CDATA[<div style="text-align:center;">
+    <img src="/assets/img/leetcode_challenge.jpg" alt="contest logo" width="450px" />
+</div>
 
-<blockquote>
-  <p>Path <strong>from</strong> <em>“count the number of characters”</em>  <strong>to</strong>  <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em> <br />
-– or just <a href="https://yandex.ru/yaintern/algorithm-training"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a> :D</p>
-</blockquote>
+<p><br /></p>
+
+<p>I was going to try to get in the <strong>habit</strong> of <em>solving the <code class="language-plaintext highlighter-rouge">leetcode</code> problem before breakfast</em>. And do it 100 times in a row to start with.</p>
+
+<p>On about day 42-45 of my venture, <strong>I stopped seeing any progress</strong>. I learned to test my code. I learned to estimate asymptotics by constraints. I learned to find the right patterns. And the whole idea started to seem like a <strong>waste of time</strong>. I decided to see it through to the end and spent the remaining 60 days solving problems with almost no interest or excitement. I would give this idea a 4/10 rating now (<em>and that’s why I don’t recommend repeating</em>). But the first 40 days were really <strong>awesome</strong>.</p>
+
+<p>Here’s what new things I got out of it.</p>
+
+<h3 id="leetcode-tasks-are-best-not-solved-on-the-leetcode-platform-im-serious"><code class="language-plaintext highlighter-rouge">Leetcode</code> tasks are best not solved on the <code class="language-plaintext highlighter-rouge">leetcode</code> platform. I’m serious.</h3>
+
+<p>That <code class="language-plaintext highlighter-rouge">run</code> / <code class="language-plaintext highlighter-rouge">submit</code> button completely shuts off the desire to think. The best I’ve come up with is to <strong>copy</strong> the problem description to an external editor (<code class="language-plaintext highlighter-rouge">vim</code> / <code class="language-plaintext highlighter-rouge">notepad</code> / <code class="language-plaintext highlighter-rouge">jupyter</code>, etc.) and <strong>write</strong> the solution there. Moreover, when the solution was written, it need to be <strong>tested</strong>. This approach slows down the process, but the % of successful submits <em>goes into space</em>.</p>
+
+<h3 id="there-are-not-so-many-patterns-for-solving-problems-really">There are not so many patterns for solving problems. Really.</h3>
+
+<p>I have almost <strong>stopped seeing something new</strong> in problem solving. Now I have solved about 380 tasks in total, and the solution of almost any task looks the same:</p>
+
+<ol>
+  <li>
+    <p>look at the constraints of the problem, this gives an understanding of what asymptotics is expected from the solution</p>
+  </li>
+  <li>
+    <p>find the pattern that is expected to be used in solving the problem, patterns can be <code class="language-plaintext highlighter-rouge">graph traversals</code>, <code class="language-plaintext highlighter-rouge">binary search</code>, <code class="language-plaintext highlighter-rouge">dynamic programming</code> and so on …</p>
+  </li>
+  <li>
+    <p>double-check that the patterns I have found are supposed to be used, this is easy enough to do by introducing invariants whose maintenance is guaranteed by the patterns I have chosen</p>
+  </li>
+</ol>
+
+<p>For an introduction to patterns, I suggest the following <a href="https://mm1705.github.io/leetcode-patterns/">[resource]</a></p>
+
+<h3 id="tips">Tips</h3>
+
+<p>Besides basic things like compact graph traversal, all kinds of binary search (yes, it comes in left, right, and classical), I’ve picked up a couple of nice snippets:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">for el in itertools.chain(array, [TRIGGER])</code></p>
+
+    <p>Sometimes when processing an <code class="language-plaintext highlighter-rouge">array</code> it is convenient to rely on the triggering of some event (<em>e.g., the change of a unique character in the example below</em>). This simplifies life, but requires additional logic in situations where the event does not occur (<em>e.g., for the last characters in the array</em>). This situation can be avoided by independently triggering the event at the right moment (<em>e.g., by expanding the initial array with a trigger symbol</em>).</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">max_product</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    returns the maximum product 
+    of the lengths of two adjacent subarrays 
+    containing only one unique character (per subarray)
+    </span><span class="sh">"""</span>
+    <span class="n">TRIGGER</span> <span class="o">=</span> <span class="sh">"</span><span class="s">$</span><span class="sh">"</span>
+    <span class="n">max_product</span> <span class="o">=</span> <span class="n">prev_cnt</span> <span class="o">=</span> <span class="n">cur_cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">prev_char</span><span class="p">,</span> <span class="n">cur_char</span> <span class="o">=</span> <span class="sh">"</span><span class="s">$</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="nf">chain</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">TRIGGER</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="n">cur_char</span><span class="p">:</span>
+            <span class="n">cur_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">max_product</span> <span class="o">=</span> <span class="nf">max</span><span class="p">(</span><span class="n">max_product</span><span class="p">,</span> <span class="n">cur_cnt</span> <span class="o">*</span> <span class="n">prev_cnt</span><span class="p">)</span>
+            <span class="n">prev_char</span><span class="p">,</span> <span class="n">cur_char</span> <span class="o">=</span> <span class="n">cur_char</span><span class="p">,</span> <span class="n">char</span>
+            <span class="n">prev_cnt</span><span class="p">,</span> <span class="n">cur_cnt</span> <span class="o">=</span> <span class="n">cur_cnt</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">max_product</span>
+</code></pre></div>    </div>
+
+    <p>The example above is toy-like but demonstrative. In it, we can avoid adding a trigger, but then we would have to do an additional comparison at each iteration.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">get_ngbs</code>, <code class="language-plaintext highlighter-rouge">for dx, dy in [(-1, 0), ...]</code></p>
+
+    <p>When working with graphs (especially if they are represented by a chessboard or something similar), it is convenient to introduce a function that returns a list of neighbors.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_ngbs</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ngb</span> <span class="ow">in</span> <span class="nf">get_possible_ngbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nf">condition</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ngb</span><span class="p">):</span>
+            <span class="n">res</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">ngb</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>    </div>
+
+    <p>The <code class="language-plaintext highlighter-rouge">condition</code> above can be, for example, the absence of obstacles or the freedom of the cell.<br />
+And the possible neighbors are taken by iterating over all possible directions of movement.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># four-way movements around the current node
+</span><span class="k">def</span> <span class="nf">get_possible_ngbs</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="ow">in</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">&lt;</span> <span class="n">max_x</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">&lt;</span> <span class="n">max_y</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">@lru_cache</code></p>
+
+    <p>When working with dynamic programming, where the order of element traversal is not obvious, you can put all the work on caching and recursion by using the <code class="language-plaintext highlighter-rouge">@lru_cache</code> decorator.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">el</span><span class="p">:</span> <span class="sh">'</span><span class="s">Element</span><span class="sh">'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="c1"># calculating dp equation by using `dp` values
+</span>    <span class="k">pass</span>
+
+<span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">els</span><span class="p">:</span>
+    <span class="nf">dp</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">TARGET_EL</span><span class="p">]</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">defaultdict(lambda: DUMMY_VALUE)</code></p>
+
+    <p>Also in dynamic programming it is sometimes useful to set some default <code class="language-plaintext highlighter-rouge">DUMMY_VALUE</code>. For example, if recursive calculations are looking for the minimum of something, we can use <code class="language-plaintext highlighter-rouge">DUMMY_VALUE = float('inf')</code>. This will avoid checking that the element whose value we are accessing has already been retrieved at some point.</p>
+  </li>
+</ul>
+
+<h3 id="top-problems">Top problems</h3>
+
+<ul>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/substring-with-largest-variance/description/">[substring-with-largest-variance]</a></strong>: just a nasty task due to the many different cases</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/minimum-speed-to-arrive-on-time/description/">[minimum-speed-to-arrive-on-time]</a></strong>: interesting edge cases</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/description/">[longest-subarray-of-1s-after-deleting-one-element]</a></strong>: interesting edge cases</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/find-k-pairs-with-smallest-sums/description/">[find-k-pairs-with-smallest-sums]</a></strong>: interesting combination of heap and set</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/insert-delete-getrandom-o1/description/">[insert-delete-getrandom-o1]</a></strong>: interesting combination of array and hash</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/lru-cache/">[lru-cache]</a></strong>: interesting combination of a hash table and a list; trick of introducing front / back nodes</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/maximum-running-time-of-n-computers/description/">[maximum-running-time-of-n-computers]</a></strong>: non-obvious strategy without a short proof of correctness</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/shortest-path-to-get-all-keys/description/">[shortest-path-to-get-all-keys]</a></strong>: the most complicated bfs I’ve ever seen</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/tallest-billboard/description/">[tallest-billboard]</a></strong>: beautiful reduction of the complexity</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/check-if-it-is-a-straight-line/description">[check-if-it-is-a-straight-line]</a></strong>: beautiful application of math (vector product)</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/stone-game-ii/description/">[stone-game-ii]</a></strong>: interesting property of the zero-sum games</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/contest/biweekly-contest-104/problems/power-of-heroes/">[power-of-heroes]</a></strong>: good properties of functionals (linearity)</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/intersection-of-two-linked-lists/">[intersection-of-two-linked-lists]</a></strong>: small (but important!) step – finding the nearest common node of two lists</p>
+  </li>
+  <li>
+    <p><strong><a href="https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/description/">[number-of-subsequences-that-satisfy-the-given-sum-condition]</a></strong>: trick to represent the solution as a binary string</p>
+  </li>
+</ul>]]></content><author><name></name></author><category term="code," /><category term="algorithms," /><category term="contest" /><summary type="html"><![CDATA[the attempt to solve leetcodes's problems 100 days in a row]]></summary></entry><entry><title type="html">Yandex Training 3.0 - Hints and Results</title><link href="https://zinchse.github.io/blog/2023/yandex-training/" rel="alternate" type="text/html" title="Yandex Training 3.0 - Hints and Results" /><published>2023-06-22T13:59:00+00:00</published><updated>2023-06-22T13:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/yandex-training</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/yandex-training/"><![CDATA[<p><img src="/assets/img/contest_logo.png" alt="contest logo" width="800px" /></p>
+
+<p>Path <strong>from</strong> <em>“count the number of characters”</em>  <strong>to</strong>  <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em>, or just <a href="https://yandex.ru/yaintern/algorithm-training"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a> :D</p>
+
+<h3 id="thoughts">Thoughts</h3>
 
 <p>I’ve already seen most of the problems from there in some form, but I really liked the last block. The concept of the <code class="language-plaintext highlighter-rouge">State Graph</code> is very cool, I recommend everyone to get acquainted.
 You can find my solutions and the template with optimal and universal I/O <a href="https://github.com/zinchse/_contests">[here]</a>.</p>
@@ -14,24 +171,24 @@ You can find my solutions and the template with optimal and universal I/O <a hre
 <p>The main experience that I took away from these trainings:</p>
 
 <ul>
-  <li><strong><code class="language-plaintext highlighter-rouge">Input/Output</code> is an important part of the problem</strong>
-    <blockquote>
-      <p>you have to think about how fast you read and write data; to combat this problem, I wrote a special <a href="https://github.com/zinchse/_contests/blob/main/yandex%20training%203.0/template.py">[template]</a> in which you need to organize only one function <code class="language-plaintext highlighter-rouge">solve</code>, the data is processed by other methods in an optimal way</p>
-    </blockquote>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">Input/Output</code> is an important part of the problem</strong></p>
+
+    <p>You have to think about how fast you read and write data. To combat this problem, I wrote a special <a href="https://github.com/zinchse/_contests/blob/main/yandex%20training%203.0/template.py">[template]</a> in which You need to organize only one function <code class="language-plaintext highlighter-rouge">solve</code>, the data is processed by other methods in an optimal way.</p>
   </li>
-  <li><strong>the problem’s input limits are the most important information in the problem’s definition</strong>
-    <blockquote>
-      <p>you can use them to figure out the asymptotic required solution; my advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10 ** 7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine</p>
-    </blockquote>
+  <li>
+    <p><strong>The problem’s input limits are the most important information in the problem’s definition</strong></p>
+
+    <p>You can use them to figure out the asymptotic required solution. My advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10 ** 7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine.</p>
   </li>
-  <li><strong>even simple arithmetic operations can be saved</strong>
-    <blockquote>
-      <p>for example, if suddenly within a loop you repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d ** 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, you can significantly speed up the program</p>
-    </blockquote>
+  <li>
+    <p><strong>Even simple arithmetic operations can be saved</strong></p>
+
+    <p>If suddenly within a loop You repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d ** 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, You can significantly speed up the program.</p>
   </li>
-  <li><strong>iterating over rows and columns in a matrix, if they are represented by a list of lists, is not the same thing</strong>
-    <blockquote>
-      <p>yes, this is quite a basic rule, but once in an asymptotically optimal solution I ran into this, and for a long time I could not understand what solution the authors of the problem expected from me… the reason for this phenomenon is the physical arrangement of array memory elements and random access speed</p>
-    </blockquote>
+  <li>
+    <p><strong>Iterating over rows and columns in a matrix, if they are represented by a list of lists, is not the same thing</strong></p>
+
+    <p>Yes, this is quite a basic rule, but once in an asymptotically optimal solution I ran into this, and for a long time I could not understand what solution the authors of the problem expected from me… The reason for this phenomenon is the physical arrangement of array memory elements and random access speed</p>
   </li>
 </ul>]]></content><author><name></name></author><category term="code," /><category term="algorithms," /><category term="contest" /><summary type="html"><![CDATA[general conclusions after participating in the contest]]></summary></entry></feed>

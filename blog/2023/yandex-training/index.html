@@ -131,10 +131,9 @@
   <article class="post-content">
     <p><img src="/assets/img/contest_logo.png" alt="contest logo" width="800px"></p>
 
-<blockquote>
-  <p>Path <strong>from</strong> <em>“count the number of characters”</em>  <strong>to</strong>  <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em> <br>
-– or just <a href="https://yandex.ru/yaintern/algorithm-training" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a> :D</p>
-</blockquote>
+<p>Path <strong>from</strong> <em>“count the number of characters”</em>  <strong>to</strong>  <em>“compress graph by going to graph on connected components, build common transitive vertex to reduce number of edges, set problem on state graph and solve it bypassing 0-1 BFS”</em>, or just <a href="https://yandex.ru/yaintern/algorithm-training" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">[Yandex.Training 3.0]</code></a> :D</p>
+
+<h3 id="thoughts">Thoughts</h3>
 
 <p>I’ve already seen most of the problems from there in some form, but I really liked the last block. The concept of the <code class="language-plaintext highlighter-rouge">State Graph</code> is very cool, I recommend everyone to get acquainted.
 You can find my solutions and the template with optimal and universal I/O <a href="https://github.com/zinchse/_contests" rel="external nofollow noopener" target="_blank">[here]</a>.</p>
@@ -145,28 +144,24 @@ You can find my solutions and the template with optimal and universal I/O <a hre
 
 <ul>
   <li>
-<strong><code class="language-plaintext highlighter-rouge">Input/Output</code> is an important part of the problem</strong>
-    <blockquote>
-      <p>you have to think about how fast you read and write data; to combat this problem, I wrote a special <a href="https://github.com/zinchse/_contests/blob/main/yandex%20training%203.0/template.py" rel="external nofollow noopener" target="_blank">[template]</a> in which you need to organize only one function <code class="language-plaintext highlighter-rouge">solve</code>, the data is processed by other methods in an optimal way</p>
-    </blockquote>
+    <p><strong><code class="language-plaintext highlighter-rouge">Input/Output</code> is an important part of the problem</strong></p>
+
+    <p>You have to think about how fast you read and write data. To combat this problem, I wrote a special <a href="https://github.com/zinchse/_contests/blob/main/yandex%20training%203.0/template.py" rel="external nofollow noopener" target="_blank">[template]</a> in which You need to organize only one function <code class="language-plaintext highlighter-rouge">solve</code>, the data is processed by other methods in an optimal way.</p>
   </li>
   <li>
-<strong>the problem’s input limits are the most important information in the problem’s definition</strong>
-    <blockquote>
-      <p>you can use them to figure out the asymptotic required solution; my advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10 ** 7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine</p>
-    </blockquote>
+    <p><strong>The problem’s input limits are the most important information in the problem’s definition</strong></p>
+
+    <p>You can use them to figure out the asymptotic required solution. My advice is to assume that python can handle <code class="language-plaintext highlighter-rouge">10 ** 7</code> operations; then a solution with complexity <code class="language-plaintext highlighter-rouge">n * n</code> for an input size of <code class="language-plaintext highlighter-rouge">10 000</code> is not even worth writing, while <code class="language-plaintext highlighter-rouge">n * logn</code> is fine.</p>
   </li>
   <li>
-<strong>even simple arithmetic operations can be saved</strong>
-    <blockquote>
-      <p>for example, if suddenly within a loop you repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d ** 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, you can significantly speed up the program</p>
-    </blockquote>
+    <p><strong>Even simple arithmetic operations can be saved</strong></p>
+
+    <p>If suddenly within a loop You repeatedly step to elements at some distance, for example <code class="language-plaintext highlighter-rouge">d ** 3</code>, then by storing this value at each iteration in the <code class="language-plaintext highlighter-rouge">shift</code> variable, You can significantly speed up the program.</p>
   </li>
   <li>
-<strong>iterating over rows and columns in a matrix, if they are represented by a list of lists, is not the same thing</strong>
-    <blockquote>
-      <p>yes, this is quite a basic rule, but once in an asymptotically optimal solution I ran into this, and for a long time I could not understand what solution the authors of the problem expected from me… the reason for this phenomenon is the physical arrangement of array memory elements and random access speed</p>
-    </blockquote>
+    <p><strong>Iterating over rows and columns in a matrix, if they are represented by a list of lists, is not the same thing</strong></p>
+
+    <p>Yes, this is quite a basic rule, but once in an asymptotically optimal solution I ran into this, and for a long time I could not understand what solution the authors of the problem expected from me… The reason for this phenomenon is the physical arrangement of array memory elements and random access speed</p>
   </li>
 </ul>
 
@@ -192,7 +187,7 @@ You can find my solutions and the template with optimal and universal I/O <a hre
     <footer class="fixed-bottom">
       <div class="container mt-0">
         © Copyright 2023 Sergey E. Zinchenko. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>.
-Last updated: June 25, 2023.
+Last updated: August 13, 2023.
       </div>
     </footer>
 

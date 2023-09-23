@@ -1,5 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-09-23T13:11:26+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
-</subtitle><entry><title type="html">Leetcode Marathon (**do not repeat!**)</title><link href="https://zinchse.github.io/blog/2023/leetcode-challenge/" rel="alternate" type="text/html" title="Leetcode Marathon (**do not repeat!**)" /><published>2023-08-12T14:59:00+00:00</published><updated>2023-08-12T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/leetcode-challenge</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/leetcode-challenge/"><![CDATA[<div style="text-align:center;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-09-23T13:19:09+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
+</subtitle><entry><title type="html">Why is understanding the physical implementation of memory useful?</title><link href="https://zinchse.github.io/blog/2023/padding/" rel="alternate" type="text/html" title="Why is understanding the physical implementation of memory useful?" /><published>2023-09-02T14:59:00+00:00</published><updated>2023-09-02T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/padding</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/padding/"><![CDATA[<h1 id="data-compression">Data compression</h1>
+
+<p>I recently <a href="https://zinchse.github.io/blog/2023/yandex-training/">[talked]</a> about the moment when <code class="language-plaintext highlighter-rouge">Yandex.Trainings</code> put me on the spot. The last problem in this contest can be reduced to a BFS on a state graph. I got into it in a minute, spent two more on the code. And? My first submit got <code class="language-plaintext highlighter-rouge">MLE</code> (memory limit error). I thought: “Okay, I’ll fix it”. I optimized the code and… I got MLE again! On a different test, but there is no difference. All the time of the contest I was beating myself up over it, thinking: “What the hell is this?”. But it didn’t work. I guess sometimes even I can be wrong…</p>
+
+<p>A couple months after that, I went back to the task, looked at it with fresh eyes and came to the conclusion that I was doing everything right! Mostly the task was passed in C++, and few people had encountered this problem. But by chance I still came across a <code class="language-plaintext highlighter-rouge">.py</code> solution that passed all the tests! And it implemented exactly what I tried, except for one thing. The only thing that made the solution different was that the description of a vertex of the state graph was compressed from a tuple to a <strong>single integer</strong>. It is conceptually <strong>impossible</strong> to describe a graph vertex with less than 3 numbers. However, given that each of these three numbers is guaranteed to be in a known small range, it is possible to encode all numbers with one! In fact, this approach exploits an interesting feature of the hardware:</p>
+
+<div align="center">
+<i>No matter how large a number is stored in a variable, physically it always occupies a certain space!</i>
+</div>
+
+<p><br />
+<em>And how we can use it?</em> Let’s take a look… <br />
+Suppose we have numbers \(a\) and \(b\), each of which is in the range \([0; \, 10^d - 1]\). Then both of these numbers can be represented by a single number \(z\) as follows \(z = zip(a, b) = a \cdot 10 ^ {d} + b\). If \(d=2\), \(a=1\) and \(b=12\), then \(z=zip(a, b) = 112\). By the number \(z\) we can always recover \(a\) and \(b\) as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">z</span> <span class="o">//</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">z</span> <span class="o">%</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<figure>
+    <div style="text-align:center;">
+        <img src="/assets/img/zip_example.png" alt="alignment example" width="450px" />
+        <figcaption>
+            An example of compressing two integers into one 
+            <br />
+            due to a large number of non-significant zeros.
+        </figcaption>
+    </div>
+</figure>
+
+<p>Although asymptotically the occupied memory remains the same, at large sizes the savings of even a factor of constant can be extremely noticeable!</p>
+
+<p>*note that we assume all numbers are positive, otherwise we would need an extra bit.</p>
+
+<h1 id="padding">Padding</h1>
+
+<p>Now we has convinced that studying the features of physical storage of objects in memory can be useful. However, now we will get acquainted with an even more interesting technique.</p>
+
+<p>In the real world, the hardware reads several consecutive bytes (often 4) at once on each read operation. Moreover, on a number of architectures, it can only read 4 bytes from a position that is a multiple of 4. That is (<em>when indexing bytes from 1</em>), on some architectures it is basically <strong>impossible to read bytes [2-5] at a time</strong>. In this case, if we want to store an integer of size 4 bytes, the most efficient way to store it is to place it in consecutive 4 bytes starting at a multiple of 4. Why? Because it’s the only way we can read all the bytes of a number, spending <em>only 1 read operation</em> (see picture below). Any other way of storing information would take more! And the most efficient way to store a \(b\) byte number is to arrange it starting at the byte whose number is a multiple of \(b\) (the reason for this phenomenon is already very technical and we will omit it). Arranging objects so that they satisfy this condition is called <strong>alignment</strong>.</p>
+
+<figure>
+    <div style="text-align:center;">
+        <img src="/assets/img/alignment_example.png" alt="alignment example" width="450px" />
+        <figcaption>
+            An example of where additional read operations
+            <br />
+             may be required if bytes are misaligned.
+        </figcaption>
+    </div>
+</figure>
+
+<p>Okay, easy and simple. Although… Stop! What should we do with structures whose fields have different sizes? The requirements for their alignment are <strong>different</strong> and we can’t store the fields right behind each other. To combat this, we will have to use <strong>padding</strong> technique. This consists of a) locating the beginning of the structure in a byte whose address is a multiple of the size of the largest field in the structure and b) keeping all fields aligned by introducing “garbage” bytes if necessary.</p>
+
+<p><strong>Example</strong></p>
+
+<p>Suppose we have a <code class="language-plaintext highlighter-rouge">MyStruct</code> structure with <code class="language-plaintext highlighter-rouge">char</code> and <code class="language-plaintext highlighter-rouge">int</code> fields. The first field must be located starting from the byte divisible by 4 (because of the peculiarities of reading by quadruples). But the second field can’t follow it because of its alignment requirement! So we have to leave 3 bytes empty! That is, we only use 5 bytes, but take up 8.  As much as 37.5% of the allocated space is garbage! Knowing this can be useful, because by rearranging the fields we can compress the space occupied by the structure! Why this is so - see example below.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">MyStruct</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">my_char</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<figure>
+    <div style="text-align:center;">
+        <img src="/assets/img/padding_example.png" alt="alignment example" width="450px" />
+        <figcaption>
+            An example of how the allocation of extra bytes can be used
+            <br />
+             to efficiently store fields of complex structure.
+        </figcaption>
+    </div>
+</figure>
+
+<p><strong>Example</strong></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp"># the size of this structure is 12 bytes
+</span><span class="k">struct</span> <span class="nc">MyLargeStruct</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">first_char</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">second_char</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="cp"># but the size of this structure is only 8 bytes
+</span><span class="k">struct</span> <span class="nc">MySmallStruct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">first_char</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">second_char</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>For the <code class="language-plaintext highlighter-rouge">MyLargeStruct</code> structure, we need as many as 6 additional padding bytes! The first 3 are for aligning the <code class="language-plaintext highlighter-rouge">value</code> field on a multiple of 4. But besides that we need 3 bytes after the last <code class="language-plaintext highlighter-rouge">char</code>. Why? It’s not so trivial anymore. Suppose we want to create an array with elements of this structure. To support field alignment of all objects at once and easy addressing, it is very convenient to keep the size of the structure divisible to the size of its largest field. In our case, the size of the largest field is 4, and we have to add 3 bytes of alignment at the end. But for <code class="language-plaintext highlighter-rouge">MyStructSmall</code>, we only need 2 bytes of padding at the end of it. That is, just by rearranging the order of the fields, we took 3 times less additional bytes!</p>
+
+<h1 id="bloom-filter">Bloom filter</h1>
+
+<p>Even with the most efficient data arrangement, in some cases we will have unused memory space due to the hardware architecture. This means that we can occupy it with something useful! For example, add new fields in those places that will be occupied anyway.</p>
+
+<figure>
+    <div style="text-align:center;">
+        <img src="/assets/img/bloom_example.png" alt="alignment example" width="450px" />
+        <figcaption>
+            Knowledge about physical data storage can be used to improve
+            <br />
+            the efficiency of an algorithm. For example, we can add new
+            <br />
+            fields in places where padding will be used anyway.
+        </figcaption>
+    </div>
+</figure>
+
+<p>In practice I faced such a situation when fields of my structure were hash values of some object. My structures were often used for expensive comparison of objects, which was often avoided by hash matching check. By introducing fields with the values of other hash functions, I was able to significantly reduce collisions. In fact, I turned my comparison algorithm into something very similar to the Bloom filter. This <strong>improved</strong> my system performance, and <strong>I didn’t waste a single byte of extra space</strong> !</p>
+
+<p>Some might argue: “Why would You go off in the direction of the Bloom filter? Ok, You have more space, take a more complex hash function. You might even have fewer collisions with it!”. Yeah. Thanks for the idea, but for backward compatibility, I had to leave the previous field as it is. That’s the main beauty of this approach - with the help of memory management knowledge You can <strong>add new functionality</strong> to Your structure <strong>without any overhead and consequences</strong>!</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<div align="center">
+<i>Knowledge is power and failures can be turned into useful lessons :)</i>
+</div>]]></content><author><name></name></author><category term="architecture," /><category term="algorithms" /><summary type="html"><![CDATA[From data compression to padding and Bloom's filter]]></summary></entry><entry><title type="html">Leetcode Marathon (**do not repeat!**)</title><link href="https://zinchse.github.io/blog/2023/leetcode-challenge/" rel="alternate" type="text/html" title="Leetcode Marathon (**do not repeat!**)" /><published>2023-08-12T14:59:00+00:00</published><updated>2023-08-12T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/leetcode-challenge</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/leetcode-challenge/"><![CDATA[<div style="text-align:center;">
     <img src="/assets/img/leetcode_challenge.jpg" alt="contest logo" width="450px" />
 </div>
 

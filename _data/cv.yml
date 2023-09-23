@@ -13,7 +13,7 @@
   contents:
     - title: researcher & developer
       institution: <a href="https://huawei.ru/">Huawei</a>
-      year: aug 2022 - now
+      year: 2022 - now
       description:
         - independent research in the field of DBMS optimization
         - development of new solutions and modification of existing ones
@@ -21,7 +21,7 @@
         - areas of study range from RL and optimization problems on graphs to the development of specialized sampling methods
     - title: researcher
       institution: <a href="https://cs.hse.ru/en/hdilab/">International Laboratory of Stochastic Algorithms and High-Dimensional Inference</a>
-      year: july 2021 - may 2022
+      year: 2021 - 2022
       description:
         - development of a new algorithm for ensembling machine learning models
         - the optimality of the developed algorithm was proved

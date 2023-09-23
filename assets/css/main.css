@@ -115,6 +115,15 @@ strong {
   color: var(--global-text-color);
 }
 
+body {
+  font-family: "Courier New", "Courier Bold", Courier, monospace;
+  font-size: 18px;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
 hr {
   border-top: 1px solid var(--global-divider-color);
 }
@@ -124,7 +133,7 @@ table th {
   color: var(--global-text-color);
 }
 table td {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 a,
@@ -151,16 +160,16 @@ blockquote {
   border-left: 2px solid var(--global-theme-color);
   margin: 1.5em 10px;
   padding: 0.5em 10px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .equation {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .caption {
-  font-size: 0.875rem;
+  font-size: 1.5rem;
   margin-top: 0.75rem;
   margin-bottom: 1.5rem;
   text-align: center;
@@ -195,7 +204,7 @@ blockquote {
 .profile .address {
   margin-bottom: 5px;
   margin-top: 5px;
-  font-family: monospace;
+  font-family: "Courier New";
 }
 .profile .address p {
   display: inline-block;
@@ -220,7 +229,7 @@ blockquote {
 }
 .post-description {
   margin-bottom: 2rem;
-  font-size: 0.875rem;
+  font-size: 1.25rem;
 }
 .post-description a {
   color: inherit;
@@ -235,6 +244,7 @@ blockquote {
   border-bottom: 1px solid var(--global-divider-color);
   background-color: var(--global-bg-color);
   opacity: 0.95;
+  font-size: 1.25rem;
 }
 
 .navbar .dropdown-menu {
@@ -264,6 +274,7 @@ blockquote {
 }
 .navbar.navbar-light .navbar-brand {
   color: var(--global-text-color);
+  font-size: 2rem;
 }
 .navbar.navbar-light .navbar-nav .nav-item .nav-link {
   color: var(--global-text-color);
@@ -347,7 +358,7 @@ blockquote {
   color: var(--global-theme-color);
 }
 .social .contact-note {
-  font-size: 0.8rem;
+  font-size: 2rem;
 }
 
 footer.fixed-bottom {
@@ -436,12 +447,12 @@ footer.sticky-bottom {
 }
 .post-list li .post-meta {
   color: var(--global-text-color-light);
-  font-size: 0.875rem;
+  font-size: 1rem;
   margin-bottom: 0;
 }
 .post-list li .post-tags {
   color: var(--global-text-color-light);
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding-top: 0.25rem;
   padding-bottom: 0;
 }
@@ -508,7 +519,7 @@ footer.sticky-bottom {
 }
 .publications h1 {
   color: var(--global-theme-color);
-  font-size: 2rem;
+  font-size: 5rem;
   text-align: center;
   margin-top: 1em;
   margin-bottom: 1em;
@@ -625,7 +636,7 @@ footer.sticky-bottom {
   margin: 10px;
 }
 .publications ol.bibliography li .hidden pre {
-  font-size: 1em;
+  font-size: 2em;
   line-height: 1.4em;
   padding: 10px;
 }

@@ -15,30 +15,31 @@
       institution: <a href="https://huawei.ru/">Huawei</a>
       year: 2022 - now
       description:
-        - independent research in the field of DBMS optimization
-        - development of new solutions and modification of existing ones
+        - acceleration of ML models
+        - development of robust solutions with fast inference time 
         - design and conducting experiments
-        - areas of study range from RL and optimization problems on graphs to the development of specialized sampling methods
+        - solving optimization problems on graphs
+        - development of specialized sampling methods, Tree-based metrics and so on ...
     - title: researcher
       institution: <a href="https://cs.hse.ru/en/hdilab/">International Laboratory of Stochastic Algorithms and High-Dimensional Inference</a>
       year: 2021 - 2022
       description:
-        - development of a new algorithm for ensembling machine learning models
+        - development of a new algorithm for ensembling ML models
         - the optimality of the developed algorithm was proved
         - the algorithm was successfully implemented and applied in practice to solve a number of test problems
-        - the publication was accepted at the ICML conference
+        - the publication was accepted at the ICML
 
 - title: Education
   type: time_table
   contents:
     - title: master degree
-      institution: Novosibirsk State University, Novosibirsk, Russia
+      institution: Novosibirsk State University
       year: now
       description:
         - optimization of RDBMS in the OLAP scenario using ML techniques
 
     - title: bachelor degree
-      institution: Novosibirsk State University, Novosibirsk, Russia
+      institution: Novosibirsk State University
       year: 2022
       description:
         - graduated with honors (GPA 4.97 / 5.0)

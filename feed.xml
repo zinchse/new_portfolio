@@ -1,5 +1,185 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-09-23T15:34:07+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
-</subtitle><entry><title type="html">Why is understanding the physical implementation of memory useful?</title><link href="https://zinchse.github.io/blog/2023/padding/" rel="alternate" type="text/html" title="Why is understanding the physical implementation of memory useful?" /><published>2023-09-02T14:59:00+00:00</published><updated>2023-09-02T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/padding</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/padding/"><![CDATA[<h1 id="data-compression">Data compression</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://zinchse.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zinchse.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-11-25T18:23:36+00:00</updated><id>https://zinchse.github.io/feed.xml</id><title type="html">blank</title><subtitle>Sergey Zinchenko&apos;s portfolio site
+</subtitle><entry><title type="html">True Parallelism vs Python</title><link href="https://zinchse.github.io/blog/2023/parallel-python/" rel="alternate" type="text/html" title="True Parallelism vs Python" /><published>2023-11-24T13:59:00+00:00</published><updated>2023-11-24T13:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/parallel-python</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/parallel-python/"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<h3 id="goals">Goals</h3>
+
+<p>The purpose of this text is to find answers to the following questions (yes, these questions are not about the same thing …):</p>
+<ul>
+  <li>is parallelism possible in python?</li>
+  <li>is true parallelism possible in python?</li>
+  <li>is true parallelism possible in python for cpu bound tasks?</li>
+</ul>
+
+<p>At the same time we will get acquainted with GIL and understand why it is so important. We will also learn why it may be useful to avoid it. And of course, we’ll learn how to do it (since it’s important). At the end, I will talk a bit about funny features of synchronization primitives in Python (I came across them while studying the topic, then I have to share them with someone).</p>
+
+<h3 id="true-parallelism">True Parallelism</h3>
+
+<p>Let’s begin by defining what <em>real parallelism</em> is. I will take it to mean the possibility of executing several program instructions at once at a particular moment of time. This can be done, for example, when there are several processor cores.</p>
+
+<p>In the end, any program is represented as a set of some machine operations. And, obviously, someone has to execute them (it can be a TPU / GPU; but in our case it will be a CPU device, aka processor). In modern systems, a CPU has several cores at once. And I will call true parallelism the case when we achieve a gain in the speed of program execution due to their use.</p>
+
+<h3 id="non-true-parallelism">Non-true Parallelism</h3>
+
+<p>One might ask, then what is non-true parallelism? For example, if we execute 2 programs on one processor core and switch between them so quickly that the user does not notice anything, it can be called parallelism - from the user’s point of view 2 programs work simultaneously. But in reality there is only one program running at each moment of time and such parallelism is not true. It is an illusion. And it can be useful. But it’s completely inappropriate for a scenario where we need to speed up a single heavy task. And this case isn’t rare.</p>
+
+<h1 id="threads-vs-process">Threads vs Process</h1>
+
+<p>The two main classes of tasks are cpu and io (input/output) bound tasks. They differ by the fact that the first class of tasks requires CPU work most of the time, while in the second type of tasks waiting for some third-party services (disk, database, etc.) to respond plays a significant role.</p>
+
+<p>There is a fundamental difference between io and cpu bound tasks: <em>io bound tasks can be easily and efficiently parallelized</em> if you pause execution of one code branch at the moment of waiting for the response of some third-party service and switch to another. In case of a cpu bound task this trick <strong>will not work</strong> - if we give the processor core to someone else, the progress of our execution will not move anywhere and we will increase the total running time.</p>
+
+<p>Let’s make sure I’m not making anything up.</p>
+
+<h3 id="example-1---io-bound-task">Example 1 - io bound task</h3>
+
+<p>As an io bound task, we will use a function that <del>just sleeps</del> simulates waiting for an external service to respond.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">io_task</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="sh">'</span><span class="s">None</span><span class="sh">'</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">N_ITER</span><span class="p">):</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.00000001</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>results (thread):</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100%|██████████| 24/24 [01:09&lt;00:00,  2.89s/it]
+[# threads = 1, # tasks = 24, workload = io]
+<span class="gh">Total time 69.4541 s
+------------------------------------------------------------
+</span>100%|██████████| 24/24 [00:45&lt;00:00,  1.89s/it]
+[# threads = 2, # tasks = 24, workload = io]
+<span class="gh">Total time 45.4068 s
+------------------------------------------------------------
+</span></code></pre></div></div>
+
+<p><strong>results (process):</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100%|██████████| 24/24 [01:09&lt;00:00,  2.90s/it]
+[# processes = 1, workload = io]
+<span class="gh">Total time 69.5136 s
+------------------------------------------------------------
+</span>100%|██████████| 24/24 [00:48&lt;00:00,  2.01s/it]
+[# processes = 2, workload = io]
+<span class="gh">Total time 48.2397 s
+------------------------------------------------------------
+</span></code></pre></div></div>
+
+<p><strong>Conclusion:</strong>
+io bound tasks can be accelerated in python by both threads and processes</p>
+
+<h3 id="example-2--cpu-bound-task">Example 2 – cpu bound task</h3>
+
+<p>Here we will use another function, which loads the processor with <del>useless</del> additions of numbers</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cpu_task</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="sh">'</span><span class="s">int</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">res</span><span class="p">:</span> <span class="sh">'</span><span class="s">int</span><span class="sh">'</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">N_ITER</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2023</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">i</span>    
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div></div>
+
+<p><strong>results (thread):</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100%|██████████| 24/24 [00:00&lt;00:00, 87.65it/s] 
+[# threads = 1, # tasks = 24, workload = cpu]
+<span class="gh">Total time 0.6310 s
+------------------------------------------------------------
+</span>100%|██████████| 24/24 [00:00&lt;00:00, 139.97it/s]
+[# threads = 2, # tasks = 24, workload = cpu]
+<span class="gh">Total time 0.6166 s
+------------------------------------------------------------
+</span></code></pre></div></div>
+
+<p><strong>results (process):</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100%|██████████| 24/24 [00:00&lt;00:00, 35.09it/s]
+[# processes = 1, workload = cpu]
+<span class="gh">Total time 0.7013 s
+------------------------------------------------------------
+</span>100%|██████████| 24/24 [00:00&lt;00:00, 68.16it/s]
+[# processes = 2, workload = cpu]
+<span class="gh">Total time 0.3638 s
+------------------------------------------------------------
+</span></code></pre></div></div>
+
+<p><strong>Conclusions:</strong></p>
+
+<p>But cpu bound tasks are not accelerated by creating additional threads (at least in python). So I didn’t lie to you.</p>
+
+<h3 id="results">Results</h3>
+
+<p>Ok, we get it. There are some problems with threads in Python. Then just use processes and be happy. But wait. I ran a sample with 1000 processes and noticed something unusual. I think I’m running out of memory …</p>
+
+<p>Let’s see in real time how much memory is used to support a python process and see how much memory is consumed by python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_mem</span><span class="p">():</span>
+    <span class="n">total_memory</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">psutil</span><span class="p">.</span><span class="nf">process_iter</span><span class="p">([</span><span class="sh">'</span><span class="s">pid</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">memory_info</span><span class="sh">'</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="sh">'</span><span class="s">Python</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">proc</span><span class="p">.</span><span class="n">info</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">]:</span>
+            <span class="n">total_memory</span> <span class="o">+=</span> <span class="n">proc</span><span class="p">.</span><span class="n">info</span><span class="p">[</span><span class="sh">'</span><span class="s">memory_info</span><span class="sh">'</span><span class="p">].</span><span class="n">rss</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Total Python</span><span class="sh">'</span><span class="s">s memory: </span><span class="si">{</span><span class="n">total_memory</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span><span class="si">}</span><span class="s"> MB</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Total Python's memory: 61.703125 MB
+</code></pre></div></div>
+
+<p>That’s on the order of <code class="language-plaintext highlighter-rouge">20mB</code> per process (I had 3 process when i called it)! That’s a lot, to put it mildly. Maybe it will be possible to make cpu bound task friends with threads?</p>
+
+<h1 id="threads--cpu-bound-task">Threads &amp; cpu bound task</h1>
+
+<p>To really realize what is the reason for such interaction of threads and cpu bound tasks, we should dive into the process of python code execution in more detail. It will not be easy. It will be difficult. It will be <em>uninteresting</em>. But we will do it. Then it will become obvious what is the bottleneck in the entire system. And to get around that limitation, we’ll resort to a <em>secret technique</em> …</p>
+
+<h3 id="pythons-code-execution"><code class="language-plaintext highlighter-rouge">Python</code>s code execution</h3>
+
+<p>The process of code execution in Python can be broken down into several main steps:</p>
+
+<p><strong>1. In first, we just write the code, for example, in the <code class="language-plaintext highlighter-rouge">file.py</code> file:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">The real science</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>2. Secondly, this code is compiled into some intermediate representation (byte code), which is something between source code and assembly language; in our case we will get a file <code class="language-plaintext highlighter-rouge">file.pyc</code> with the following contents:</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 0 LOAD_GLOBAL              0 (print)
+ 2 LOAD_CONST               1 ('The real science.')
+ 4 CALL_FUNCTION            1
+ 6 POP_TOP
+ 8 LOAD_CONST               0 (None)
+10 RETURN_VALUE
+</code></pre></div></div>
+
+<p><strong>3. After that, Python Virtual Machine is started, which, reading instructions from the <code class="language-plaintext highlighter-rouge">.pyc</code> file, generates hardware-specific machine code.</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11101011101101010110
+</code></pre></div></div>
+
+<p>Now we can see that to correctly translate instructions from byte code to machine code, we need a separate program – <em>interpreter</em>. And for each process, this interpreter is unique. Therefore, at no point in time can multiple python threads execute instructions on the processor – each of those instructions needs the help of the interpreter, which is one. Moreover, each thread acquires a special <em>Global Interpreter Lock</em> to, for example, <em>simplify memory management</em>: if we know that only one thread is running at any given moment, it is easy to keep track of the reference count of all objects, and as a consequence - we can delete then and only when its reference count goes to zero.</p>
+
+<h3 id="avoiding-gil-via-cython">Avoiding GIL via <code class="language-plaintext highlighter-rouge">Cython</code></h3>
+
+<p>Good. Now we can see that the root of the problem is the need to interpret byte code. What if we somehow write code that can be turned into machine code without the need for interpretation? For example, <code class="language-plaintext highlighter-rouge">C++</code> code does not require this extra step. Indeed, we can use a special <code class="language-plaintext highlighter-rouge">Cython</code> tool that allows us to write code using <code class="language-plaintext highlighter-rouge">C</code>-like syntax that can be executed bypassing the interpreter.</p>
+
+<p>What do we end up with? If we have the ability to write code that won’t lock the interpreter (e.g. using <code class="language-plaintext highlighter-rouge">Cython</code>), then already <strong>multiple python threads can be executed on different cores at the same time</strong>! And this is exactly what we wanted. Let’s try to do all this.</p>
+
+<p>/* I did it all honestly and posted the notebook here <a href="https://github.com/zinchse/parallel_python/tree/main">here</a>. The visualization of the result is roughly as follows: */</p>
+
+<figure style="display: block; margin: auto; text-align: center;">
+    <img src="/assets/img/cython_vs_python.png" alt="Cython vs Python" width="500px" />
+    <figcaption>
+        An example of accelerating Python's threads 
+        <br />
+        by using Cython.
+    </figcaption>
+</figure>
+
+<h1 id="remark">Remark</h1>
+
+<p>This <a href="https://github.com/zinchse/parallel_python/tree/main">repository</a> contains code that reproduces all the previously mentioned points. Also there you can see some peculiarities of the implementation of locks and semaphores in python, with which you can a) steal money and b) break the synchronization primitives. Good luck!</p>
+
+<p><strong>Used resources:</strong></p>
+<ul>
+  <li><a href="https://docs.python.org/3/library/concurrency.html">python’s doc</a></li>
+  <li><a href="https://www.youtube.com/watch?v=z7WIm0iZcOU&amp;ab_channel=%D0%94%D0%B8%D0%B4%D0%B6%D0%B8%D1%82%D0%B0%D0%BB%D0%B8%D0%B7%D0%B8%D1%80%D1%83%D0%B9%21">video 1</a></li>
+  <li><a href="https://www.youtube.com/watch?v=nR8WhdcRJwM&amp;t=3141s&amp;ab_channel=ComputerScienceCenter">video 2, very hot!</a></li>
+  <li><a href="https://www.youtube.com/watch?v=w2-QoVB1TnQ&amp;ab_channel=ComputerScienceCenter">video 3</a></li>
+  <li><a href="https://www.geeksforgeeks.org/internal-working-of-python/">gksfgks</a></li>
+</ul>]]></content><author><name></name></author><category term="code" /><summary type="html"><![CDATA[Breaking stereotypes about parallelism in python with examples.]]></summary></entry><entry><title type="html">Why is understanding the physical implementation of memory useful?</title><link href="https://zinchse.github.io/blog/2023/padding/" rel="alternate" type="text/html" title="Why is understanding the physical implementation of memory useful?" /><published>2023-09-02T14:59:00+00:00</published><updated>2023-09-02T14:59:00+00:00</updated><id>https://zinchse.github.io/blog/2023/padding</id><content type="html" xml:base="https://zinchse.github.io/blog/2023/padding/"><![CDATA[<h1 id="data-compression">Data compression</h1>
 
 <p>I recently <a href="https://zinchse.github.io/blog/2023/yandex-training/">[talked]</a> about the moment when <code class="language-plaintext highlighter-rouge">Yandex.Trainings</code> put me on the spot. The last problem in this contest can be reduced to a BFS on a state graph. I got into it in a minute, spent two more on the code. And? My first submit got <code class="language-plaintext highlighter-rouge">MLE</code> (memory limit error). I thought: “Okay, I’ll fix it”. I optimized the code and… I got MLE again! On a different test, but there is no difference. All the time of the contest I was beating myself up over it, thinking: “What the hell is this?”. But it didn’t work. I guess sometimes even I can be wrong…</p>
 

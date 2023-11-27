@@ -129,7 +129,7 @@
 
 <h3 id="goals">Goals</h3>
 
-<p>The purpose of this text is to find answers to the following questions (yes, these questions are not about the same thing …):</p>
+<p>The purpose of this text is to find answers to the following questions (yes, these questions are not about the same thing…):</p>
 <ul>
   <li>is parallelism possible in python?</li>
   <li>is true parallelism possible in python?</li>
@@ -142,17 +142,17 @@
 
 <p>Let’s begin by defining what <em>real parallelism</em> is. I will take it to mean the possibility of executing several program instructions at once at a particular moment of time. This can be done, for example, when there are several processor cores.</p>
 
-<p>In the end, any program is represented as a set of some machine operations. And, obviously, someone has to execute them (it can be a TPU / GPU; but in our case it will be a CPU device, aka processor). In modern systems, a CPU has several cores at once. And I will call true parallelism the case when we achieve a gain in the speed of program execution due to their use.</p>
+<p>More detailed: in the end, any program is represented as a set of some machine operations, and, obviously, someone has to execute them (it can be a TPU / GPU; but in our case it will be a CPU device, aka processor). In modern systems, a CPU has several cores at once. And I will call true parallelism the case when we achieve a gain in the speed of program execution due to their use.</p>
 
 <h3 id="non-true-parallelism">Non-true Parallelism</h3>
 
-<p>One might ask, then what is non-true parallelism? For example, if we execute 2 programs on one processor core and switch between them so quickly that the user does not notice anything, it can be called parallelism - from the user’s point of view 2 programs work simultaneously. But in reality there is only one program running at each moment of time and such parallelism is not true. It is an illusion. And it can be useful. But it’s completely inappropriate for a scenario where we need to speed up a single heavy task. And this case isn’t rare.</p>
+<p>One might ask, then what is non-true parallelism? For example, if we execute 2 programs on one processor core and switch between them so quickly that the user does not notice anything, it can be called parallelism - from the user’s point of view 2 programs work simultaneously. But in reality there is only one program running at each moment of time and such parallelism is not true. It. is. an. illusion. But it can be useful. And yet it’s completely inappropriate for a scenario where we need to speed up a <em>single heavy task</em> (unfortunately, this case isn’t rare).</p>
 
 <h1 id="threads-vs-process">Threads vs Process</h1>
 
-<p>The two main classes of tasks are cpu and io (input/output) bound tasks. They differ by the fact that the first class of tasks requires CPU work most of the time, while in the second type of tasks waiting for some third-party services (disk, database, etc.) to respond plays a significant role.</p>
+<p>The two main classes of tasks are <em>cpu and io (input/output) bound</em> tasks. The first class requires CPU work most of the time, while in the second type of tasks waiting for some third-party services (drive, database, etc.) to respond plays a significant role.</p>
 
-<p>There is a fundamental difference between io and cpu bound tasks: <em>io bound tasks can be easily and efficiently parallelized</em> if you pause execution of one code branch at the moment of waiting for the response of some third-party service and switch to another. In case of a cpu bound task this trick <strong>will not work</strong> - if we give the processor core to someone else, the progress of our execution will not move anywhere and we will increase the total running time.</p>
+<p>There is a fundamental difference between io and cpu bound tasks: <em>io bound tasks can be easily and efficiently parallelized</em> if you pause execution of one code branch at the moment of waiting for the response of some third-party service and switch to another. In case of a cpu bound task this trick <strong>will not work</strong> - if we give the processor core to someone else, the progress of our execution will not move anywhere and we will <strong>increase</strong> the total running time.</p>
 
 <p>Let’s make sure I’m not making anything up.</p>
 
@@ -230,9 +230,7 @@ io bound tasks can be accelerated in python by both threads and processes</p>
 
 <h3 id="results">Results</h3>
 
-<p>Ok, we get it. There are some problems with threads in Python. Then just use processes and be happy. But wait. I ran a sample with 1000 processes and noticed something unusual. I think I’m running out of memory …</p>
-
-<p>Let’s see in real time how much memory is used to support a python process and see how much memory is consumed by python:</p>
+<p>Ok, we get it. There are some problems with threads in Python. Then just use processes and be happy. But wait… Let’s see in real time how much memory is used to support a python process:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_mem</span><span class="p">():</span>
     <span class="n">total_memory</span> <span class="o">=</span> <span class="mi">0</span>
@@ -249,7 +247,7 @@ io bound tasks can be accelerated in python by both threads and processes</p>
 
 <h1 id="threads--cpu-bound-task">Threads &amp; cpu bound task</h1>
 
-<p>To really realize what is the reason for such interaction of threads and cpu bound tasks, we should dive into the process of python code execution in more detail. It will not be easy. It will be difficult. It will be <em>uninteresting</em>. But we will do it. Then it will become obvious what is the bottleneck in the entire system. And to get around that limitation, we’ll resort to a <em>secret technique</em> …</p>
+<p>To really realize what is the reason for such interaction of threads and cpu bound tasks in python, we should dive into the process of python code execution in more detail. It will not be easy. It will be difficult. It will be <em>uninteresting</em>. But we will do it. Then it will become obvious what is the bottleneck in the entire system. And to get around that limitation, we’ll resort to a <em>secret technique</em>…</p>
 
 <h3 id="pythons-code-execution">
 <code class="language-plaintext highlighter-rouge">Python</code>s code execution</h3>
@@ -271,12 +269,12 @@ io bound tasks can be accelerated in python by both threads and processes</p>
 10 RETURN_VALUE
 </code></pre></div></div>
 
-<p><strong>3. After that, Python Virtual Machine is started, which, reading instructions from the <code class="language-plaintext highlighter-rouge">.pyc</code> file, generates hardware-specific machine code.</strong></p>
+<p><strong>3. After that, Python Virtual Machine is started, which, reading instructions from the <code class="language-plaintext highlighter-rouge">.pyc</code> file, generates hardware-specific machine code:</strong></p>
 
 <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11101011101101010110
 </code></pre></div></div>
 
-<p>Now we can see that to correctly translate instructions from byte code to machine code, we need a separate program – <em>interpreter</em>. And for each process, this interpreter is unique. Therefore, at no point in time can multiple python threads execute instructions on the processor – each of those instructions needs the help of the interpreter, which is one. Moreover, each thread acquires a special <em>Global Interpreter Lock</em> to, for example, <em>simplify memory management</em>: if we know that only one thread is running at any given moment, it is easy to keep track of the reference count of all objects, and as a consequence - we can delete then and only when its reference count goes to zero.</p>
+<p>Now we can see that to correctly translate instructions from byte code to machine code, we need a separate program – <em>interpreter</em>. And for each process, this interpreter is <em>unique</em>. Therefore, at no point in time can multiple python threads execute instructions on the processor - each of those instructions needs the help of the interpreter, which is one. Moreover, each thread acquires a special <em>Global Interpreter Lock</em> to, for example, <em>simplify memory management</em>: if we know that only one thread is running at any given moment, it is easy to keep track of the reference count of all objects, and as a consequence - it’s very easy for us to understand which objects can be removed.</p>
 
 <h3 id="avoiding-gil-via-cython">Avoiding GIL via <code class="language-plaintext highlighter-rouge">Cython</code>
 </h3>
@@ -285,7 +283,7 @@ io bound tasks can be accelerated in python by both threads and processes</p>
 
 <p>What do we end up with? If we have the ability to write code that won’t lock the interpreter (e.g. using <code class="language-plaintext highlighter-rouge">Cython</code>), then already <strong>multiple python threads can be executed on different cores at the same time</strong>! And this is exactly what we wanted. Let’s try to do all this.</p>
 
-<p>/* I did it all honestly and posted the notebook here <a href="https://github.com/zinchse/parallel_python/tree/main" rel="external nofollow noopener" target="_blank">here</a>. The visualization of the result is roughly as follows: */</p>
+<p>/* I did it all honestly and posted the notebook <a href="https://github.com/zinchse/parallel_python/tree/main" rel="external nofollow noopener" target="_blank">here</a>. The visualization of the result is roughly as follows: */</p>
 
 <figure style="display: block; margin: auto; text-align: center;">
     <img src="/assets/img/cython_vs_python.png" alt="Cython vs Python" width="500px">
@@ -298,7 +296,7 @@ io bound tasks can be accelerated in python by both threads and processes</p>
 
 <h1 id="remark">Remark</h1>
 
-<p>This <a href="https://github.com/zinchse/parallel_python/tree/main" rel="external nofollow noopener" target="_blank">repository</a> contains code that reproduces all the previously mentioned points. Also there you can see some peculiarities of the implementation of locks and semaphores in python, with which you can a) steal money and b) break the synchronization primitives. Good luck!</p>
+<p>This <a href="https://github.com/zinchse/parallel_python/tree/main" rel="external nofollow noopener" target="_blank">repository</a> contains code that reproduces all the previously mentioned points. Also there you can see some <del>bugs</del> features of the implementation of locks and semaphores in python, with which you can a) steal money and b) break the synchronization primitives. Good luck!</p>
 
 <p><strong>Used resources:</strong></p>
 <ul>
@@ -331,7 +329,7 @@ io bound tasks can be accelerated in python by both threads and processes</p>
     <footer class="fixed-bottom">
       <div class="container mt-0">
         © Copyright 2023 Sergey E. Zinchenko. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>.
-Last updated: November 26, 2023.
+Last updated: November 27, 2023.
       </div>
     </footer>
 

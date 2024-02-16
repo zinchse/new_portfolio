@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: 
 permalink: /
 subtitle: ML & Database researcher and developer
 
